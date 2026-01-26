@@ -91,33 +91,69 @@
     <script>
       const yesBtn = document.getElementById("yesBtn");
       const noBtn = document.getElementById("noBtn");
+      const title = document.querySelector("h1");
+      const container = document.querySelector(".container");
 
       let scale = 1;
+      let askedOnce = false;
+
+      // Prepare No button for random movement
+      container.style.position = "relative";
+      noBtn.style.position = "absolute";
+
+      function moveNoButtonRandomly() {
+        const containerRect = container.getBoundingClientRect();
+        const btnRect = noBtn.getBoundingClientRect();
+
+        const maxX = containerRect.width - btnRect.width;
+        const maxY = containerRect.height - btnRect.height;
+
+        const randomX = Math.random() * maxX;
+        const randomY = Math.random() * maxY;
+
+        noBtn.style.left = `${randomX}px`;
+        noBtn.style.top = `${randomY}px`;
+      }
 
       noBtn.addEventListener("click", () => {
-        scale *= 1.1; // grow by 10%
+        // Grow Yes button
+        scale *= 1.1;
         yesBtn.style.transform = `scale(${scale})`;
+
+        // Move No button
+        moveNoButtonRandomly();
       });
 
       yesBtn.addEventListener("click", () => {
+        if (!askedOnce) {
+          title.innerText = "Are you sure? 🥺💖";
+
+          // Reset Yes button size
+          scale = 1;
+          yesBtn.style.transform = "scale(1)";
+
+          askedOnce = true;
+          return;
+        }
+
         document.body.innerHTML = `
-        <div style="
-          min-height:100vh;
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          text-align:center;
-          padding:20px;
-          background: linear-gradient(135deg, #ff758c, #ff7eb3);
-          color:white;
-          font-family:'Segoe UI', sans-serif;
-        ">
-          <h1 style="font-size:clamp(2rem,6vw,3rem);">
-            Yaaay! 💖🥰<br />
-            You just made me the happiest person!
-          </h1>
-        </div>
-      `;
+      <div style="
+        min-height:100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        text-align:center;
+        padding:20px;
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        color:white;
+        font-family:'Segoe UI', sans-serif;
+      ">
+        <h1 style="font-size:clamp(2rem,6vw,3rem);">
+          YAAAAAY 💖🥰<br />
+          I love you mero chuntu maya! 💘 
+        </h1>
+      </div>
+    `;
       });
     </script>
   </body>
