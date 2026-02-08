@@ -1,0 +1,336 @@
+/* Reset and Base Styles */
+:root {
+  --primary-color: #e91e63; /* Pink 500 */
+  --secondary-color: #c2185b; /* Pink 700 */
+  --accent-color: #ffd700; /* Gold */
+  --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+  --text-color: #4a4a4a;
+  --white: #ffffff;
+  --font-heading: "Great Vibes", cursive;
+  --font-body: "Poppins", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: #ffe6ea; /* Fallback */
+  background: radial-gradient(circle at center, #fff0f3, #ffd1dc);
+  color: var(--text-color);
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+}
+
+/* Hidden inputs for state management */
+input[type="radio"] {
+  display: none;
+}
+
+/* Background Animation (Floating Hearts) */
+.bg-hearts {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  font-size: 1.5rem;
+  color: rgba(233, 30, 99, 0.3);
+  animation: float 15s linear infinite;
+  bottom: -20px;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Main Container */
+.card-wrapper {
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  min-height: 75vh;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 30px;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.1),
+    0 0 0 10px rgba(255, 255, 255, 0.4);
+  padding: 40px;
+  text-align: center;
+  z-index: 10;
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  overflow: hidden;
+}
+
+/* Content Sections */
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+}
+
+/* Initial visible state */
+#welcome-screen {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Styles for Typography */
+h1 {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  color: var(--secondary-color);
+  margin-bottom: 20px;
+  line-height: 1.2;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: #666;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background: var(--primary-color);
+  color: white;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(233, 30, 99, 0.3);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  text-decoration: none;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(233, 30, 99, 0.4);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-secondary {
+  background: white;
+  color: var(--secondary-color);
+  border: 2px solid var(--primary-color);
+  margin-left: 10px;
+}
+
+/* Photo Placeholder */
+.photo-frame {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 5px solid white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  margin: 0 auto 30px;
+  background: #eee
+    url("https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80")
+    center/cover;
+  position: relative;
+}
+
+.photo-frame::after {
+  content: "❤️";
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  font-size: 2rem;
+  background: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Logic: Navigation between "pages" using Checkbox Hack */
+
+/* State: Step 1 Checked -> Hide Welcome, Show Proposal */
+#step1:checked ~ .card-wrapper #welcome-screen {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-20px) scale(0.9);
+}
+
+#step1:checked ~ .card-wrapper #proposal-screen {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+/* State: Yes Checked */
+#step2-yes:checked ~ .card-wrapper #welcome-screen {
+  display: none; /* Force hide to prevent overlap */
+}
+
+#step2-yes:checked ~ .card-wrapper #proposal-screen {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.5); /* Zoom out effect */
+}
+
+#step2-yes:checked ~ .card-wrapper #success-screen {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+/* State: No Checked -> Show Modal but keep Proposal visible behind */
+#step2-no:checked ~ .card-wrapper #welcome-screen {
+  display: none;
+}
+
+#step2-no:checked ~ .card-wrapper #proposal-screen {
+  opacity: 1;
+  filter: blur(5px);
+}
+
+#step2-no:checked ~ .modal-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Modal for "No" */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 100;
+}
+
+.modal {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 300px;
+}
+
+/* Success Screen Animations */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #f00;
+  animation: fall linear forwards;
+}
+
+/* Helper utility for confetti generation would need pre-defined divs or JS. 
+   We will rely on CSS radial gradients for a simple firework background in success state. */
+
+#success-screen {
+  background:
+    radial-gradient(circle, #ffe6ea 20%, transparent 20%),
+    radial-gradient(circle, transparent 20%, #ffe6ea 20%, transparent 30%),
+    radial-gradient(circle, #ffe6ea 20%, transparent 20%),
+    radial-gradient(circle, #ffe6ea 20%, transparent 20%);
+  background-size: 50% 50%;
+  /* This is just a pattern, not real confetti. keeping it simple. */
+}
+
+/* Ring Animation */
+.ring-box {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 20px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: rotateRing 5s infinite linear;
+}
+
+.ring {
+  font-size: 4rem;
+  line-height: 100px;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 2.2rem;
+  }
+  .card-wrapper {
+    min-height: 85vh;
+    width: 95%;
+    padding: 30px 20px;
+  }
+  .btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+}
